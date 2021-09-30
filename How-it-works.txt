@@ -1,7 +1,0 @@
-
-Workflow automation
-
-______________________________
-
-With a simple UI you can specify the path to the folder and the commands you run everytime you begin work, so that
-with one single command/button, the program will open the folders and execute the commands automatically.
