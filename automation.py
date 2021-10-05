@@ -7,9 +7,16 @@ class Menu:
         self.master.title(title)
         self.master.geometry(geometry)
 
-        #define methods for widgets 
+            
+        #mehtods for wdigets
         def browseButton():
             pass
+
+        def cdCurrentDirectory():
+            pass
+
+        def cdNewDirectory():
+            new_directory = tk.Entry(self.master, width=46).grid(column=0, row=4, sticky="NW", padx=2)
 
         #Add widgets 
 
@@ -18,12 +25,13 @@ class Menu:
         folder_path = tk.Entry(self.master, width=46).grid(column=0, row=1, padx=2)
         browse_button = tk.Button(self.master, widt=6, text="Browse", command=browseButton).grid(column=1, row=1, padx=2)
 
+        #change directory to folder
+        tk.Button(self.master, text="Cd into specified folder", command=cdCurrentDirectory).grid(column=0, row=2, sticky="NW", padx=2, pady=2)
+        tk.Button(self.master, text="Specify new folder to cd in", command=cdNewDirectory).grid(column=0, row=3, sticky="NW", padx=2, pady=2)
 
-        #specify enviroment to activate 
         #specify commands to run
-        #specify additional misc commands (usually project specific)
-
-
+        tk.Label(self.master, text="Which cmd commands do you want to run?").grid(column=0, row=5, sticky="NW")
+        cmd_commands = tk.Text(self.master, width=45, height=10).grid(column=0, row=6, sticky="NW", padx=5, columnspan=3)
 
         self.master.mainloop()
 
