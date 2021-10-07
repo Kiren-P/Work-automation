@@ -20,7 +20,11 @@ class Menu:
             new_directory.grid(column=0, row=4, sticky="NW", padx=2)
 
         def Save():
-            """Saves the information to a database (or overrides existing info"""
+            """Saves the information to a database (or overrides existing info)"""
+            folder = folder_path.get()
+            #new_directory.get()
+            commands = cmd_commands.get()
+            program = path_to_program.get()
             pass
 
         #Add widgets 
