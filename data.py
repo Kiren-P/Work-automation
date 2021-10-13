@@ -5,15 +5,14 @@ import sqlite3
 connection = sqlite3.connect("info.db")
 c = connection.cursor()
 
-def create_table():
-	"""Creates a table with the columns"""
 
-	c.execute("""CREATE TABLE paths (
-			folder_path TEXT,
-			cd_path TEXT,
-			cmdcommands TEXT,
-			programs TEXT 
-			)""")
+
+c.execute("""CREATE TABLE paths (
+	folder_path TEXT,
+	cd_path TEXT,
+	cmdcommands TEXT,
+	programs TEXT 
+	)""")
 
 def insert_paths():
 	"""Inserts paths into the paths table"""

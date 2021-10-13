@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter.constants import LEFT
 from tkinter import filedialog
+import os
 
 class Menu:
     def __init__(self, master, title, geometry, height, width):
@@ -10,11 +11,16 @@ class Menu:
         self.master.resizable(height=height, width=width)
 
         #mehtods for wdigets
-        def browseButton():
+        def browseFolder():
             self.folder_path.delete("0", "end")
             folder = filedialog.askdirectory()
             self.folder_path.insert("0", folder)
-            
+
+        def browseProgram():
+            self.path_to_program.delete("0", "end")
+            program = filedialog.askopenfile(mode="r", filetypes=[("Executables, Scripts, Etc...", "*.*")])
+            abs_path = os.path.abspath(program.name)
+            self.path_to_program.insert("0", abs_path)
 
         def cdCurrentDirectory():
             self.cmd_commands.insert(0.0, "cd " + self.folder_path.get() + "\n") # current path here
@@ -30,13 +36,10 @@ class Menu:
             try:
                 cd_path = self.new_directory.get()
             except AttributeError:
-                pass    
-            commands = self.cmd_commands.get("1.0", "end-1c")
+                cd_path = self.cmd_commands.get("1.0", "1.end")
+            commands = self.cmd_commands.get("2.0", "end-1c")
             program = self.path_to_program.get()
-            try:
-                return print(folder, cd_path, commands, program)
-            except UnboundLocalError:
-                return print(folder, commands, program)
+            return print(folder, cd_path, commands, program)
 
         #Add widgets 
 
@@ -44,7 +47,8 @@ class Menu:
         tk.Label(self.master, text="Specify the folder path:").grid(column=0, row=0, padx=2, sticky="NW")
         self.folder_path = tk.Entry(self.master, width=62)
         self.folder_path.grid(column=0, row=1, padx=2, sticky="NW")
-        self.browse_button = tk.Button(self.master, width=6, text="Browse", command=browseButton).grid(column=1, row=1, padx=1, sticky="NW")
+        self.browse_folder = tk.Button(self.master, width=6, text="Browse", command=browseFolder)
+        self.browse_folder.grid(column=1, row=1, padx=1, sticky="NW")
 
         #change directory to folder
         self.cdcurrent = tk.Button(self.master, text="Cd into specified folder", command=cdCurrentDirectory).grid(column=0, row=2, sticky="NW", padx=2, pady=2)
@@ -59,9 +63,12 @@ class Menu:
         tk.Label(self.master, text="Path to any other program to run (Not mentioned in cmd commands)").grid(column=0, row=7, sticky="NW", padx=2, pady=2)
         self.path_to_program = tk.Entry(self.master, width=62)
         self.path_to_program.grid(column=0, row=8, sticky="NW", padx=2, pady=2 )
+        self.browse_program = tk.Button(self.master, width=6, text="Browse", command=browseProgram)
+        self.browse_program.grid(column=1, row=8, padx=1, sticky="NW")
 
         #save button
         self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2)
+
 
         self.master.mainloop()
 
