@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter.constants import LEFT
 from tkinter import filedialog
 import os
+from data import insert_paths 
 
 class Menu:
     def __init__(self, master, title, geometry, height, width):
@@ -23,10 +24,9 @@ class Menu:
             self.path_to_program.insert("0", abs_path)
 
         def cdCurrentDirectory():
-            self.cmd_commands.insert(0.0, "cd " + self.folder_path.get() + "\n") # current path here
+            return self.folder_path.get()
 
         def cdNewDirectory():
-            self.cmd_commands.delete("1.0", "1.end")
             self.new_directory = tk.Entry(self.master, width=62)
             self.new_directory.grid(column=0, row=4, sticky="NW", padx=2)
 
@@ -36,10 +36,10 @@ class Menu:
             try:
                 cd_path = self.new_directory.get()
             except AttributeError:
-                cd_path = self.cmd_commands.get("1.0", "1.end")
-            commands = self.cmd_commands.get("2.0", "end-1c")
+                cd_path = self.folder_path.get()
+            commands = self.cmd_commands.get("1.0", "end-1c")
             program = self.path_to_program.get()
-            return print(folder, cd_path, commands, program)
+            return insert_paths(folder, cd_path, commands, program)
 
         #Add widgets 
 

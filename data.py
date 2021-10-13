@@ -1,35 +1,38 @@
 import sqlite3
 
-#when this file runs the db will get created 
+# def create_table():
 
-connection = sqlite3.connect("info.db")
-c = connection.cursor()
+# 	connection = sqlite3.connect("info.db")
+# 	c = connection.cursor()
 
+# 	c.execute("""CREATE TABLE paths (
+# 		folder_path TEXT,
+# 		cd_path TEXT,
+# 		cmdcommands TEXT,
+# 		programs TEXT 
+# 		)""")
 
-
-c.execute("""CREATE TABLE paths (
-	folder_path TEXT,
-	cd_path TEXT,
-	cmdcommands TEXT,
-	programs TEXT 
-	)""")
-
-def insert_paths():
+def insert_paths(var1, var2, var3, var4):
 	"""Inserts paths into the paths table"""
 
-	# c.execute("""
-	# INSERT INTO paths 
-	# VALUES (?, ?, ?, ?)""" ,(var1, var2, var3, var4)) these are the variables to be imported and inserted
+	connection = sqlite3.connect("info.db")
+	c = connection.cursor()
+
+	c.execute("""
+	INSERT INTO paths 
+	VALUES (?, ?, ?, ?)""" ,(var1, var2, var3, var4))
+
+	connection.commit()
+	connection.close()
 
 def get_paths():
 	"""Queries the all the paths from paths table"""
+
+	connection = sqlite3.connect("info.db")
+	c = connection.cursor()
 
 	c.execute("""
 	SELECT *
 	FROM paths
 	""")
 	paths = c.fetchall()
-
-
-connection.commit()
-connection.close()
