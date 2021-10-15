@@ -13,17 +13,21 @@ import sqlite3
 # 		)""")
 
 def insert_paths(var1, var2, var3, var4):
-	"""Inserts paths into the paths table"""
+	"""Inserts paths into the paths table
+	(The table only has one record, the current one)"""
 
 	connection = sqlite3.connect("info.db")
 	c = connection.cursor()
+
+	#deletes any previous records 
+	c.execute("DELETE FROM paths")
 
 	c.execute("""
 	INSERT INTO paths 
 	VALUES (?, ?, ?, ?)""" ,(var1, var2, var3, var4))
 
 	connection.commit()
-	connection.close()
+	return connection.close()
 
 def get_paths():
 	"""Queries the all the paths from paths table"""
@@ -36,3 +40,9 @@ def get_paths():
 	FROM paths
 	""")
 	paths = c.fetchall()
+
+	connection.commit()
+	connection.close()
+	return paths
+
+
