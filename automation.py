@@ -10,7 +10,6 @@ if bool(list_of_paths):
     current_paths = list_of_paths[0]
 
     saved_folder = current_paths[0] 
-    #print(saved_folder)
     saved_cd_path = current_paths[1]
     saved_cmd_commands = current_paths[2]
     saved_other_program = current_paths[3]
