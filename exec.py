@@ -17,7 +17,6 @@ def get_and_run():
     con.close()
 
     paths = list_of_paths[0]
-    print(paths)
 
     #use the os module to:
     saved_folder = paths[0] #open this folder
@@ -25,6 +24,9 @@ def get_and_run():
     saved_cmd_commands = paths[2] #execute these commands !!! (seperate them properly)
     saved_other_program = paths[3] #open this program
 
+    #command = "cmd /c " + "start %windir%\explorer.exe " + saved_folder
+
+    os.system('cmd /k "start %windir%\explorer.exe {}"'.format(saved_folder))
 
 if __name__=="__main__":
     get_and_run()

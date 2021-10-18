@@ -30,12 +30,14 @@ class Menu:
         def browseFolder():
             self.folder_path.delete("0", "end")
             folder = filedialog.askdirectory()
+            folder = folder.replace("/", "\\")
             self.folder_path.insert("0", folder)
 
         def browseProgram():
             self.path_to_program.delete("0", "end")
             program = filedialog.askopenfile(mode="r", filetypes=[("Executables, Scripts, Etc...", "*.*")])
             abs_path = os.path.abspath(program.name)
+            abs_path = abs_path.replace("/", "\\")
             self.path_to_program.insert("0", abs_path)
 
         def cdCurrentDirectory():
