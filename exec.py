@@ -1,6 +1,6 @@
 import sqlite3
 import os 
-
+import subprocess
 
 def get_and_run():
     con = sqlite3.connect("info.db")
@@ -26,7 +26,13 @@ def get_and_run():
 
     #command = "cmd /c " + "start %windir%\explorer.exe " + saved_folder
 
-    os.system('cmd /k "start %windir%\explorer.exe {}"'.format(saved_folder))
+    #os.system('cmd /k "start %windir%\explorer.exe {}"'.format(saved_folder)) #opening the folder
+    #os.system ('cmd /k "cd {}"'.format(saved_cd_path)) #cd into saved cd path
+
+    commands = saved_cmd_commands.split("\n")
+    
+ 
+    # find way to run multiple cmd commands 
 
 if __name__=="__main__":
     get_and_run()
