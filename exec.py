@@ -25,11 +25,16 @@ def get_and_run():
     saved_other_program = paths[3] #open this program
 
     #command = "cmd /c " + "start %windir%\explorer.exe " + saved_folder
-
+    
+    #running the commands 
     #os.system('cmd /k "start %windir%\explorer.exe {}"'.format(saved_folder)) #opening the folder
     #os.system ('cmd /k "cd {}"'.format(saved_cd_path)) #cd into saved cd path
 
-    commands = saved_cmd_commands.split("\n")
+    subprocess.run("start %windir%\explorer.exe {}".format(saved_folder), shell=True)
+    #learn more about subprocess / Popen to use commands 
+
+
+    #commands = saved_cmd_commands.split("\n")
     
  
     # find way to run multiple cmd commands 
