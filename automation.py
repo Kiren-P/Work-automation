@@ -2,22 +2,23 @@ import tkinter as tk
 from tkinter.constants import LEFT
 from tkinter import filedialog
 import os
-from data import insert_paths, get_paths
+#from data import insert_paths, get_paths
 
-list_of_paths = get_paths()
+#list_of_paths = get_paths()
 
-if bool(list_of_paths):
-    current_paths = list_of_paths[0]
+# if bool(list_of_paths):
+#     current_paths = list_of_paths[0]
 
-    saved_folder = current_paths[0] 
-    saved_cd_path = current_paths[1]
-    saved_cmd_commands = current_paths[2]
-    saved_other_program = current_paths[3]
-else:
-    saved_folder = False #this isn't the pyton way, find sth else to fix this
-    saved_cd_path = False
-    saved_cmd_commands = False
-    saved_other_program = False
+#     saved_folder = current_paths[0] 
+#     saved_cd_path = current_paths[1]
+#     saved_cmd_commands = current_paths[2]
+#     saved_other_program = current_paths[3]
+# else:
+#     saved_folder = False
+#     saved_other_program = False
+
+saved_folder = False
+saved_other_program = False
 
 class Menu:
     def __init__(self, master, title, geometry, height, width):
@@ -40,23 +41,16 @@ class Menu:
             abs_path = abs_path.replace("/", "\\")
             self.path_to_program.insert("0", abs_path)
 
-        def cdCurrentDirectory():
-            return self.folder_path.get()
-
-        def cdNewDirectory():
-            self.new_directory = tk.Entry(self.master, width=62)
-            self.new_directory.grid(column=0, row=4, sticky="NW", padx=2)
-
         def Save():
             """Gets paths"""
-            folder = self.folder_path.get()
-            try:
-                cd_path = self.new_directory.get()
-            except AttributeError:
-                cd_path = self.folder_path.get()
-            commands = self.cmd_commands.get("1.0", "end-1c")
-            program = self.path_to_program.get()
-            return insert_paths(folder, cd_path, commands, program)
+            # folder = self.folder_path.get()
+            # program = self.path_to_program.get()
+            # return insert_paths(folder, cd_path, commands, program)
+            var3 = var.get()
+            if var3 == 1:
+                print ("open cmd")
+            else:
+                print("Don't open cmd")
 
         #Add widgets
 
@@ -70,33 +64,22 @@ class Menu:
         if saved_folder:
             self.folder_path.insert(0, saved_folder)
 
-        #change directory to folder
-        self.cdcurrent = tk.Button(self.master, text="Cd into specified folder", command=cdCurrentDirectory).grid(column=0, row=2, sticky="NW", padx=2, pady=2)
-        self.cdnew = tk.Button(self.master, text="Specify new folder to cd in", command=cdNewDirectory).grid(column=0, row=3, sticky="NW", padx=2, pady=2)
-        
-        if saved_cd_path:
-            if saved_cd_path == saved_folder:
-                pass
-            else:
-                self.new_directory = tk.Entry(self.master, width=62)
-                self.new_directory.grid(column=0, row=4, sticky="NW", padx=2)
-                self.new_directory.insert(0, saved_cd_path)
-
-        #specify commands to run
-        tk.Label(self.master, text="Which cmd commands do you want to run?").grid(column=0, row=5, sticky="NW")
-        self.cmd_commands = tk.Text(self.master, width=46, height=10)
-        self.cmd_commands.grid(column=0, row=6, sticky="NW", padx=5, columnspan=2)
-        if saved_cmd_commands:
-            self.cmd_commands.insert("1.0", saved_cmd_commands)
-
         #specify path to any other programs to run
-        tk.Label(self.master, text="Path to any other program to run (Not mentioned in cmd commands)").grid(column=0, row=7, sticky="NW", padx=2, pady=2)
+        tk.Label(self.master, text="Path to program to run").grid(column=0, row=2, sticky="NW", padx=2, pady=2)
         self.path_to_program = tk.Entry(self.master, width=62)
-        self.path_to_program.grid(column=0, row=8, sticky="NW", padx=2, pady=2 )
+        self.path_to_program.grid(column=0, row=3, sticky="NW", padx=2, pady=2 )
         self.browse_program = tk.Button(self.master, width=6, text="Browse", command=browseProgram)
-        self.browse_program.grid(column=1, row=8, padx=1, sticky="NW")
+        self.browse_program.grid(column=1, row=3, padx=1, sticky="NW")
         if saved_other_program:
             self.path_to_program.insert(0, saved_other_program)
+
+        #radio button for cmd
+        var = tk.IntVar()
+
+        cmd_radio_1 = tk.Radiobutton(self.master, text="Open cmd", value=1, variable=var)
+        cmd_radio_1.grid(column=0, row=4, padx=1, sticky="NW")
+        cmd_radio_0 = tk.Radiobutton(self.master, text="Don't open cmd", value=0, variable=var)
+        cmd_radio_0.grid(column=0, row=5, padx=1, sticky="NW")
 
         #save button
         self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2)
