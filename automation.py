@@ -2,23 +2,21 @@ import tkinter as tk
 from tkinter.constants import LEFT
 from tkinter import filedialog
 import os
-#from data import insert_paths, get_paths
+from data import insert_paths, get_paths
 
-#list_of_paths = get_paths()
+list_of_paths = get_paths()
 
-# if bool(list_of_paths):
-#     current_paths = list_of_paths[0]
+if bool(list_of_paths):
+    current_paths = list_of_paths[0]
 
-#     saved_folder = current_paths[0] 
-#     saved_cd_path = current_paths[1]
-#     saved_cmd_commands = current_paths[2]
-#     saved_other_program = current_paths[3]
-# else:
-#     saved_folder = False
-#     saved_other_program = False
-
-saved_folder = False
-saved_other_program = False
+    saved_folder = current_paths[0] 
+    saved_other_program = current_paths[1]
+    open_cmd = current_paths[2]
+    print(open_cmd)
+else:
+    saved_folder = False
+    saved_other_program = False
+    open_cmd = False
 
 class Menu:
     def __init__(self, master, title, geometry, height, width):
@@ -42,15 +40,11 @@ class Menu:
             self.path_to_program.insert("0", abs_path)
 
         def Save():
-            """Gets paths"""
-            # folder = self.folder_path.get()
-            # program = self.path_to_program.get()
-            # return insert_paths(folder, cd_path, commands, program)
+            """Gets and saves paths"""
+            folder = self.folder_path.get()
+            program = self.path_to_program.get()
             var3 = var.get()
-            if var3 == 1:
-                print ("open cmd")
-            else:
-                print("Don't open cmd")
+            return insert_paths(folder, program, var3)
 
         #Add widgets
 
@@ -76,10 +70,21 @@ class Menu:
         #radio button for cmd
         var = tk.IntVar()
 
+        if open_cmd:
+            var.set(open_cmd)
+        else:
+            var.set(0)
+
+
         cmd_radio_1 = tk.Radiobutton(self.master, text="Open cmd", value=1, variable=var)
         cmd_radio_1.grid(column=0, row=4, padx=1, sticky="NW")
         cmd_radio_0 = tk.Radiobutton(self.master, text="Don't open cmd", value=0, variable=var)
         cmd_radio_0.grid(column=0, row=5, padx=1, sticky="NW")
+
+        # if bool(open_cmd):
+        #     var.set(2)
+        # else:
+        #     var.set(1)
 
         #save button
         self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2)
