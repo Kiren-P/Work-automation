@@ -81,12 +81,6 @@ class Menu:
         cmd_radio_0 = tk.Radiobutton(self.master, text="Don't open cmd", value=0, variable=var)
         cmd_radio_0.grid(column=0, row=5, padx=1, sticky="NW")
 
-        # if bool(open_cmd):
-        #     var.set(2)
-        # else:
-        #     var.set(1)
-
-        #save button
         self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2)
 
 
