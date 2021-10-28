@@ -12,7 +12,6 @@ if bool(list_of_paths):
     saved_folder = current_paths[0] 
     saved_other_program = current_paths[1]
     open_cmd = current_paths[2]
-    print(open_cmd)
 else:
     saved_folder = False
     saved_other_program = False
@@ -75,13 +74,19 @@ class Menu:
         else:
             var.set(0)
 
-
         cmd_radio_1 = tk.Radiobutton(self.master, text="Open cmd", value=1, variable=var)
         cmd_radio_1.grid(column=0, row=4, padx=1, sticky="NW")
         cmd_radio_0 = tk.Radiobutton(self.master, text="Don't open cmd", value=0, variable=var)
         cmd_radio_0.grid(column=0, row=5, padx=1, sticky="NW")
 
-        self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2)
+        selected = tk.StringVar()
+        options = ["preset 1", "preset 2", "preset 3"]
+
+        tk.Label(self.master, text="Select a preset").grid(column=0, row=6, padx=2, pady=2)
+        presets = tk.OptionMenu(self.master, selected, *options)
+        presets.grid(column=0, row=7, padx=1)
+
+        self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2, pady=5)
 
 
         self.master.mainloop()
