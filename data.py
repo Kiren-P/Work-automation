@@ -8,25 +8,22 @@ def create_table():
 	c.execute("""CREATE TABLE paths (
 		folder_path TEXT,
 		program TEXT,
-		cmd INTEGER 
+		cmd INTEGER,
+		name TEXT
 		)""")
 
 	connection.commit()
 	connection.close()
 
-def insert_paths(var1, var2, var3):
-	"""Inserts paths into the paths table
-	(The table only has one record, the current one)"""
+def insert_paths(var1, var2, var3, var4):
+	"""Inserts paths into the paths table"""
 
 	connection = sqlite3.connect("info.db")
 	c = connection.cursor()
 
-	#deletes any previous records 
-	c.execute("DELETE FROM paths")
-
 	c.execute("""
 	INSERT INTO paths 
-	VALUES (?, ?, ?)""" ,(var1, var2, var3))
+	VALUES (?, ?, ?, ?)""" ,(var1, var2, var3, var4))
 
 	connection.commit()
 	return connection.close()
@@ -46,3 +43,5 @@ def get_paths():
 	connection.commit()
 	connection.close()
 	return paths
+
+create_table()

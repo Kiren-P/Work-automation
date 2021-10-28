@@ -6,7 +6,7 @@ from data import insert_paths, get_paths
 
 list_of_paths = get_paths()
 
-if bool(list_of_paths):
+if bool(list_of_paths):  #update for new preset system
     current_paths = list_of_paths[0]
 
     saved_folder = current_paths[0] 
@@ -43,7 +43,8 @@ class Menu:
             folder = self.folder_path.get()
             program = self.path_to_program.get()
             var3 = var.get()
-            return insert_paths(folder, program, var3)
+            name = preset_name.get()
+            #return insert_paths(folder, program, var3, name)  #check if it returns the name 
 
         #Add widgets
 
@@ -79,12 +80,18 @@ class Menu:
         cmd_radio_0 = tk.Radiobutton(self.master, text="Don't open cmd", value=0, variable=var)
         cmd_radio_0.grid(column=0, row=5, padx=1, sticky="NW")
 
+        tk.Label(self.master, text="Select a name for this set of paths").grid(column=0, row=6, padx=2, pady=2, sticky="NW")
+        preset_name = tk.Entry(self.master, width=62)
+        preset_name.grid(column=0, row=7, padx=2, pady=2)
+
+        #preset dropdown
         selected = tk.StringVar()
         options = ["preset 1", "preset 2", "preset 3"]
 
-        tk.Label(self.master, text="Select a preset").grid(column=0, row=6, padx=2, pady=2)
+
+        tk.Label(self.master, text="Select a preset").grid(column=0, row=8, padx=2, pady=2)
         presets = tk.OptionMenu(self.master, selected, *options)
-        presets.grid(column=0, row=7, padx=1)
+        presets.grid(column=0, row=9, padx=1)
 
         self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2, pady=5)
 
