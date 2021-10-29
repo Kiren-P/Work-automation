@@ -9,7 +9,8 @@ def create_table():
 		folder_path TEXT,
 		program TEXT,
 		cmd INTEGER,
-		name TEXT
+		name TEXT,
+		UNIQUE(name)
 		)""")
 
 	connection.commit()
@@ -26,10 +27,11 @@ def insert_paths(var1, var2, var3, var4):
 	VALUES (?, ?, ?, ?)""" ,(var1, var2, var3, var4))
 
 	connection.commit()
-	return connection.close()
+	connection.close()
+	return
 
 def get_paths():
-	"""Queries the all the paths from paths table"""
+	"""Queries the preset of paths from paths table"""
 
 	connection = sqlite3.connect("info.db")
 	c = connection.cursor()
@@ -44,4 +46,11 @@ def get_paths():
 	connection.close()
 	return paths
 
-create_table()
+def clear_table():
+	connection = sqlite3.connect("info.db")
+	c = connection.cursor()
+	
+	c.execute("DELETE FROM paths")
+
+	connection.commit()
+	connection.close()
