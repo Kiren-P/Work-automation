@@ -2,21 +2,7 @@ import tkinter as tk
 from tkinter.constants import LEFT
 from tkinter import filedialog
 import os
-from data import insert_paths, get_paths
-
-# list_of_paths = get_paths()
-
-# if bool(list_of_paths):
-#     current_paths = list_of_paths[0]
-#     saved_folder = current_paths[0] 
-#     saved_other_program = current_paths[1]
-#     open_cmd = current_paths[2]
-#     saved_name = current_paths[3]
-# else:
-saved_folder = False
-saved_other_program = False
-open_cmd = False
-saved_name = False
+from data import insert_paths, get_names
 
 class Menu:
     def __init__(self, master, title, geometry, height, width):
@@ -44,8 +30,10 @@ class Menu:
             """Gets and saves paths"""
             folder = self.folder_path.get()
             program = self.path_to_program.get()
+            program1 = self.path_to_program1.get()
             var3 = var.get()
-            #insert_paths(folder, program, var3)
+            name = self.preset_name.get()
+            insert_paths(folder, program, program1, var3, name)
             self.master.destroy()
             return start()
 
@@ -57,12 +45,6 @@ class Menu:
         self.folder_path.grid(column=0, row=1, padx=2, sticky="NW")
         self.browse_folder = tk.Button(self.master, width=6, text="Browse", command=browseFolder)
         self.browse_folder.grid(column=1, row=1, padx=1, sticky="NW")
-        
-        if saved_folder:
-            self.folder_path.insert(0, saved_folder)
-
-        #radio button for cmd
-        var = tk.IntVar()
 
         #specify path to any other programs to run
         tk.Label(self.master, text="Path to program to run").grid(column=0, row=2, sticky="NW", padx=2, pady=2)
@@ -70,30 +52,24 @@ class Menu:
         self.path_to_program.grid(column=0, row=3, sticky="NW", padx=2, pady=2 )
         self.browse_program = tk.Button(self.master, width=6, text="Browse", command=lambda :browseProgram(self.path_to_program))
         self.browse_program.grid(column=1, row=3, padx=1, sticky="NW")
-        if saved_other_program:
-            self.path_to_program.insert(0, saved_other_program)
 
         tk.Label(self.master, text="Path to second program to run").grid(column=0, row=4, sticky="NW", padx=2, pady=2)
         self.path_to_program1 = tk.Entry(self.master, width=62)
         self.path_to_program1.grid(column=0, row=5, sticky="NW", padx=2, pady=2 )
         self.browse_program1 = tk.Button(self.master, width=6, text="Browse", command=lambda :browseProgram(self.path_to_program1))
         self.browse_program1.grid(column=1, row=5, padx=1, sticky="NW")
-        if saved_other_program:
-            self.path_to_program1.insert(0, saved_other_program)
 
-        if open_cmd:
-            var.set(open_cmd)
-        else:
-            var.set(0)
+        #radio button for cmd
+        var = tk.IntVar()
 
-        cmd_radio_1 = tk.Radiobutton(self.master, text="Open cmd", value=1, variable=var)
-        cmd_radio_1.grid(column=0, row=6, padx=1, sticky="NW")
-        cmd_radio_0 = tk.Radiobutton(self.master, text="Don't open cmd", value=0, variable=var)
-        cmd_radio_0.grid(column=0, row=7, padx=1, sticky="NW")
+        self.cmd_radio_1 = tk.Radiobutton(self.master, text="Open cmd", value=1, variable=var)
+        self.cmd_radio_1.grid(column=0, row=6, padx=1, sticky="NW")
+        self.cmd_radio_0 = tk.Radiobutton(self.master, text="Don't open cmd", value=0, variable=var)
+        self.cmd_radio_0.grid(column=0, row=7, padx=1, sticky="NW")
 
         tk.Label(self.master, text="Select a name for this set of paths").grid(column=0, row=8, padx=2, pady=2, sticky="NW")
-        preset_name = tk.Entry(self.master, width=62)
-        preset_name.grid(column=0, row=9, padx=2, pady=2)
+        self.preset_name = tk.Entry(self.master, width=62)
+        self.preset_name.grid(column=0, row=9, padx=2, pady=2)
         
         self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2, pady=5)
 
@@ -120,7 +96,7 @@ class Main:
 
         #select a preset
         selected = tk.StringVar()
-        options = ["preset 1", "preset 2", "preset 3"]
+        options = get_names()
 
         tk.Label(self.master, text="Select a preset").place(relx=0.5, rely=0.4, anchor="center")
         presets = tk.OptionMenu(self.master, selected, *options)
