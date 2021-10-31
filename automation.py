@@ -32,12 +32,13 @@ class Menu:
             folder = folder.replace("/", "\\")
             self.folder_path.insert("0", folder)
 
-        def browseProgram():
-            self.path_to_program.delete("0", "end")
+        def browseProgram(entry_x):
+            entry_x.delete("0", "end")
             program = filedialog.askopenfile(mode="r", filetypes=[("Executables, Scripts, Etc...", "*.*")])
             abs_path = os.path.abspath(program.name)
             abs_path = abs_path.replace("/", "\\")
-            self.path_to_program.insert("0", abs_path)
+            entry_x.insert("0", abs_path)
+        
 
         def Save():
             """Gets and saves paths"""
@@ -60,17 +61,25 @@ class Menu:
         if saved_folder:
             self.folder_path.insert(0, saved_folder)
 
+        #radio button for cmd
+        var = tk.IntVar()
+
         #specify path to any other programs to run
         tk.Label(self.master, text="Path to program to run").grid(column=0, row=2, sticky="NW", padx=2, pady=2)
         self.path_to_program = tk.Entry(self.master, width=62)
         self.path_to_program.grid(column=0, row=3, sticky="NW", padx=2, pady=2 )
-        self.browse_program = tk.Button(self.master, width=6, text="Browse", command=browseProgram)
+        self.browse_program = tk.Button(self.master, width=6, text="Browse", command=lambda :browseProgram(self.path_to_program))
         self.browse_program.grid(column=1, row=3, padx=1, sticky="NW")
         if saved_other_program:
             self.path_to_program.insert(0, saved_other_program)
 
-        #radio button for cmd
-        var = tk.IntVar()
+        tk.Label(self.master, text="Path to second program to run").grid(column=0, row=4, sticky="NW", padx=2, pady=2)
+        self.path_to_program1 = tk.Entry(self.master, width=62)
+        self.path_to_program1.grid(column=0, row=5, sticky="NW", padx=2, pady=2 )
+        self.browse_program1 = tk.Button(self.master, width=6, text="Browse", command=lambda :browseProgram(self.path_to_program1))
+        self.browse_program1.grid(column=1, row=5, padx=1, sticky="NW")
+        if saved_other_program:
+            self.path_to_program1.insert(0, saved_other_program)
 
         if open_cmd:
             var.set(open_cmd)
@@ -78,17 +87,14 @@ class Menu:
             var.set(0)
 
         cmd_radio_1 = tk.Radiobutton(self.master, text="Open cmd", value=1, variable=var)
-        cmd_radio_1.grid(column=0, row=4, padx=1, sticky="NW")
+        cmd_radio_1.grid(column=0, row=6, padx=1, sticky="NW")
         cmd_radio_0 = tk.Radiobutton(self.master, text="Don't open cmd", value=0, variable=var)
-        cmd_radio_0.grid(column=0, row=5, padx=1, sticky="NW")
+        cmd_radio_0.grid(column=0, row=7, padx=1, sticky="NW")
 
-        tk.Label(self.master, text="Select a name for this set of paths").grid(column=0, row=6, padx=2, pady=2, sticky="NW")
+        tk.Label(self.master, text="Select a name for this set of paths").grid(column=0, row=8, padx=2, pady=2, sticky="NW")
         preset_name = tk.Entry(self.master, width=62)
-        preset_name.grid(column=0, row=7, padx=2, pady=2)
-
-        #preset dropdown
+        preset_name.grid(column=0, row=9, padx=2, pady=2)
         
-
         self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2, pady=5)
 
         self.master.mainloop()
