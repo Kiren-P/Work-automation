@@ -44,9 +44,9 @@ class Menu:
             folder = self.folder_path.get()
             program = self.path_to_program.get()
             var3 = var.get()
-            name = selected.get()
-            insert_paths(folder, program, var3, name) 
-            return self.master.destroy()
+            #insert_paths(folder, program, var3)
+            self.master.destroy()
+            return start()
 
         #Add widgets
 
@@ -87,31 +87,48 @@ class Menu:
         preset_name.grid(column=0, row=7, padx=2, pady=2)
 
         #preset dropdown
-        selected = tk.StringVar()
-        options = ["preset 1", "preset 2", "preset 3"]
-
-        if saved_name:
-            preset_name.insert(0, saved_name)
-            selected.set(saved_name)
-        else:
-            selected.set(options[0])
-
-
-        tk.Label(self.master, text="Select a preset").grid(column=0, row=8, padx=2, pady=2)
-        presets = tk.OptionMenu(self.master, selected, *options)
-        presets.grid(column=0, row=9, padx=1)
+        
 
         self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2, pady=5)
 
         self.master.mainloop()
 
+class Main:
+    def __init__(self, master, title, geometry, height, width):
+        self.master = master
+        self.master.title(title)
+        self.master.geometry(geometry)
+        self.master.resizable(height=height, width=width)
 
-def run():
+        def new_preset():
+            self.master.destroy()
+            root = tk.Tk()
+            window_size = "500x400"
+            resizable_height = 0
+            resizable_width = 0
+            app = Menu(root, "Workflow Automation", window_size, resizable_height, resizable_width)
+        
+        #make a new preset
+        self.new_preset_button = tk.Button(self.master, text="New preset", command=new_preset)
+        self.new_preset_button.place(relx=0.5, rely=0.3, anchor="center")
+
+        #select a preset
+        selected = tk.StringVar()
+        options = ["preset 1", "preset 2", "preset 3"]
+
+        tk.Label(self.master, text="Select a preset").place(relx=0.5, rely=0.4, anchor="center")
+        presets = tk.OptionMenu(self.master, selected, *options)
+        presets.place(relx=0.5, rely=0.5, anchor="center")
+
+        self.master.mainloop()
+
+def start():
     root = tk.Tk()
-    window_size = "500x400"
+    window_size = "200x300"
     resizable_height = 0
     resizable_width = 0
-    app = Menu(root, "Workflow Automation", window_size, resizable_height, resizable_width)
+    app = Main(root, "Workflow Automation", window_size, resizable_height, resizable_width)
+
 
 if __name__=="__main__":
-    run()
+    start()
