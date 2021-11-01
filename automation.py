@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter.constants import LEFT
 from tkinter import filedialog
 import os
-from data import insert_paths, get_names
+from data import insert_paths, get_names, get_paths, save_current
 
 class Menu:
     def __init__(self, master, title, geometry, height, width):
@@ -27,7 +27,7 @@ class Menu:
         
 
         def Save():
-            """Gets and saves paths"""
+            """Gets and saves paths for new preset"""
             folder = self.folder_path.get()
             program = self.path_to_program.get()
             program1 = self.path_to_program1.get()
@@ -90,6 +90,12 @@ class Main:
             resizable_width = 0
             app = Menu(root, "Workflow Automation", window_size, resizable_height, resizable_width)
         
+        def Confirm():
+            """This confirms the chosen preset"""
+            selected_preset = selected.get()
+            save_current(selected_preset)
+            return self.master.destroy()
+        
         #make a new preset
         self.new_preset_button = tk.Button(self.master, text="New preset", command=new_preset)
         self.new_preset_button.place(relx=0.5, rely=0.3, anchor="center")
@@ -97,10 +103,15 @@ class Main:
         #select a preset
         selected = tk.StringVar()
         options = get_names()
-
+        if len(options) == 0:
+            options = ["No presets yet"]
+            selected.set(options[0])
         tk.Label(self.master, text="Select a preset").place(relx=0.5, rely=0.4, anchor="center")
         presets = tk.OptionMenu(self.master, selected, *options)
         presets.place(relx=0.5, rely=0.5, anchor="center")
+
+        self.confirm_btn = tk.Button(self.master, text="Confirm", command=Confirm)
+        self.confirm_btn.place(relx=0.5, rely=0.6, anchor="center")
 
         self.master.mainloop()
 

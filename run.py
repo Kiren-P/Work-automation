@@ -7,26 +7,30 @@ def get_and_run():
     c = con.cursor()
 
     c.execute("""
-    SELECT *
+    SELECT folder_path, program, program2, cmd
     FROM paths
+    INNER JOIN selected
+    ON name = selected.selected_name
     """)
 
-    list_of_paths = c.fetchall()
+    tuple_of_paths = c.fetchall()
 
     con.commit()
     con.close()
 
-    paths = list_of_paths[0]
+    print(tuple_of_paths)
 
-    #use the os module to:
-    saved_folder = paths[0] #open this folder
-    saved_other_program = paths[1] #open this program
-    open_cmd = paths[2]
+    # #use the os module to:
+    # saved_folder = paths[0] #open this folder
+    # saved_other_program = paths[1] #open this program
+    # open_cmd = paths[2]
 
-    webbrowser.open(saved_folder)
-    webbrowser.open(saved_other_program)
-    if open_cmd:
-        webbrowser.open("C:\\WINDOWS\\system32\\cmd.exe")
+    # webbrowser.open(saved_folder)
+    # webbrowser.open(saved_other_program)
+    # if open_cmd:
+    #     webbrowser.open("C:\\WINDOWS\\system32\\cmd.exe")
+
+    return
 
 
 if __name__ == "__main__":
