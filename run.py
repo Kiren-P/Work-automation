@@ -1,31 +1,21 @@
 import sqlite3
 import os 
 import webbrowser
+from data import get_run
 
-def get_and_run():
-    con = sqlite3.connect("info.db")
-    c = con.cursor()
 
-    c.execute("""
-    SELECT folder_path, program, program2, cmd
-    FROM paths
-    INNER JOIN selected
-    ON name = selected.selected_name
-    """)
 
-    tuple_of_paths = c.fetchall()
+def run():
+    paths = get_run()
 
-    con.commit()
-    con.close()
+    saved_folder = paths[0][0]
+    program = paths[0][1]
+    program1 = paths[0][2]
+    cmd = paths[0][3]
 
-    print(tuple_of_paths)
-
-    # #use the os module to:
-    # saved_folder = paths[0] #open this folder
-    # saved_other_program = paths[1] #open this program
-    # open_cmd = paths[2]
-
-    # webbrowser.open(saved_folder)
+    print(saved_folder, program, program1, cmd)
+    #open alles
+    webbrowser.open(saved_folder)
     # webbrowser.open(saved_other_program)
     # if open_cmd:
     #     webbrowser.open("C:\\WINDOWS\\system32\\cmd.exe")
@@ -34,4 +24,4 @@ def get_and_run():
 
 
 if __name__ == "__main__":
-    get_and_run()
+    run()

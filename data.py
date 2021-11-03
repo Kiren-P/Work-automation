@@ -51,7 +51,17 @@ def save_current(name):
 	c.execute("INSERT INTO selected VALUES(?)", (name,))
 	connection.commit()
 	connection.close()
-	return 
+	return
+
+def get_current():
+	connection = sqlite3.connect("info.db")
+	c = connection.cursor()
+	c.execute("SELECT * FROM selected")
+	name = [i[0] for i in c.fetchall()]
+	name = name[0]
+	connection.commit()
+	connection.close()
+	return name
 
 def get_paths(name):
 	"""Queries the preset of paths from paths table"""
@@ -69,6 +79,20 @@ def get_paths(name):
 	connection.commit()
 	connection.close()
 	return paths
+
+def get_run():
+    con = sqlite3.connect("info.db")
+    c = con.cursor()
+    c.execute("""
+    SELECT folder_path, program, program2, cmd
+    FROM paths
+    INNER JOIN selected
+    ON name = selected.selected_name
+    """)
+    list_of_paths = [i for i in c.fetchall()]
+    con.commit()
+    con.close()
+    return list_of_paths
 
 def clear_tables():
 	connection = sqlite3.connect("info.db")

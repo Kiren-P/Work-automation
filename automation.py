@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter.constants import LEFT
 from tkinter import filedialog
 import os
-from data import insert_paths, get_names, get_paths, save_current
+from data import insert_paths, get_names, get_paths, save_current, get_current
 
 class Menu:
     def __init__(self, master, title, geometry, height, width):
@@ -106,6 +106,8 @@ class Main:
         if len(options) == 0:
             options = ["No presets yet"]
             selected.set(options[0])
+        else:
+            selected.set(get_current())
         tk.Label(self.master, text="Select a preset").place(relx=0.5, rely=0.4, anchor="center")
         presets = tk.OptionMenu(self.master, selected, *options)
         presets.place(relx=0.5, rely=0.5, anchor="center")
