@@ -58,7 +58,10 @@ def get_current():
 	c = connection.cursor()
 	c.execute("SELECT * FROM selected")
 	name = [i[0] for i in c.fetchall()]
-	name = name[0]
+	try:
+		name = name[0]
+	except IndexError:
+		name = "Nothing selected"
 	connection.commit()
 	connection.close()
 	return name
@@ -93,6 +96,16 @@ def get_run():
     con.commit()
     con.close()
     return list_of_paths
+
+def delete(name):
+	connection = sqlite3.connect("info.db")
+	c = connection.cursor()
+	if get_current() == name:
+		c.execute("DELETE FROM selected")
+	c.execute("DELETE FROM paths WHERE name = (?)", (name,))
+	connection.commit()
+	connection.close()
+	return
 
 def clear_tables():
 	connection = sqlite3.connect("info.db")

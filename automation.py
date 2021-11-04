@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter.constants import LEFT
 from tkinter import filedialog
 import os
-from data import insert_paths, get_names, get_paths, save_current, get_current
+from data import insert_paths, get_names, get_paths, save_current, get_current, delete
 
 class Menu:
     def __init__(self, master, title, geometry, height, width):
@@ -95,6 +95,13 @@ class Main:
             selected_preset = selected.get()
             save_current(selected_preset)
             return self.master.destroy()
+
+        def deleteSelected():
+            """This deletes the selected preset"""
+            selected_preset = selected.get()
+            delete(selected_preset)
+            self.master.destroy()
+            return start()
         
         #make a new preset
         self.new_preset_button = tk.Button(self.master, text="New preset", command=new_preset)
@@ -114,6 +121,9 @@ class Main:
 
         self.confirm_btn = tk.Button(self.master, text="Confirm", command=Confirm)
         self.confirm_btn.place(relx=0.5, rely=0.6, anchor="center")
+
+        self.delete_selected = tk.Button(self.master, text="Delete selected preset", command=deleteSelected)
+        self.delete_selected.place(relx=0.5, rely=0.8, anchor="center")
 
         self.master.mainloop()
 
