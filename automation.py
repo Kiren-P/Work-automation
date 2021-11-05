@@ -2,22 +2,7 @@ import tkinter as tk
 from tkinter.constants import LEFT
 from tkinter import filedialog
 import os
-from data import insert_paths, get_paths
-
-list_of_paths = get_paths()
-
-if bool(list_of_paths):
-    current_paths = list_of_paths[0]
-
-    saved_folder = current_paths[0] 
-    saved_cd_path = current_paths[1]
-    saved_cmd_commands = current_paths[2]
-    saved_other_program = current_paths[3]
-else:
-    saved_folder = False #this isn't the pyton way, find sth else to fix this
-    saved_cd_path = False
-    saved_cmd_commands = False
-    saved_other_program = False
+from data import insert_paths, get_names, get_paths, save_current, get_current, delete
 
 class Menu:
     def __init__(self, master, title, geometry, height, width):
@@ -33,30 +18,24 @@ class Menu:
             folder = folder.replace("/", "\\")
             self.folder_path.insert("0", folder)
 
-        def browseProgram():
-            self.path_to_program.delete("0", "end")
+        def browseProgram(entry_x):
+            entry_x.delete("0", "end")
             program = filedialog.askopenfile(mode="r", filetypes=[("Executables, Scripts, Etc...", "*.*")])
             abs_path = os.path.abspath(program.name)
             abs_path = abs_path.replace("/", "\\")
-            self.path_to_program.insert("0", abs_path)
-
-        def cdCurrentDirectory():
-            return self.folder_path.get()
-
-        def cdNewDirectory():
-            self.new_directory = tk.Entry(self.master, width=62)
-            self.new_directory.grid(column=0, row=4, sticky="NW", padx=2)
+            entry_x.insert("0", abs_path)
+        
 
         def Save():
-            """Gets paths"""
+            """Gets and saves paths for new preset"""
             folder = self.folder_path.get()
-            try:
-                cd_path = self.new_directory.get()
-            except AttributeError:
-                cd_path = self.folder_path.get()
-            commands = self.cmd_commands.get("1.0", "end-1c")
             program = self.path_to_program.get()
-            return insert_paths(folder, cd_path, commands, program)
+            program1 = self.path_to_program1.get()
+            var3 = var.get()
+            name = self.preset_name.get()
+            insert_paths(folder, program, program1, var3, name)
+            self.master.destroy()
+            return start()
 
         #Add widgets
 
@@ -66,51 +45,95 @@ class Menu:
         self.folder_path.grid(column=0, row=1, padx=2, sticky="NW")
         self.browse_folder = tk.Button(self.master, width=6, text="Browse", command=browseFolder)
         self.browse_folder.grid(column=1, row=1, padx=1, sticky="NW")
-        
-        if saved_folder:
-            self.folder_path.insert(0, saved_folder)
-
-        #change directory to folder
-        self.cdcurrent = tk.Button(self.master, text="Cd into specified folder", command=cdCurrentDirectory).grid(column=0, row=2, sticky="NW", padx=2, pady=2)
-        self.cdnew = tk.Button(self.master, text="Specify new folder to cd in", command=cdNewDirectory).grid(column=0, row=3, sticky="NW", padx=2, pady=2)
-        
-        if saved_cd_path:
-            if saved_cd_path == saved_folder:
-                pass
-            else:
-                self.new_directory = tk.Entry(self.master, width=62)
-                self.new_directory.grid(column=0, row=4, sticky="NW", padx=2)
-                self.new_directory.insert(0, saved_cd_path)
-
-        #specify commands to run
-        tk.Label(self.master, text="Which cmd commands do you want to run?").grid(column=0, row=5, sticky="NW")
-        self.cmd_commands = tk.Text(self.master, width=46, height=10)
-        self.cmd_commands.grid(column=0, row=6, sticky="NW", padx=5, columnspan=2)
-        if saved_cmd_commands:
-            self.cmd_commands.insert("1.0", saved_cmd_commands)
 
         #specify path to any other programs to run
-        tk.Label(self.master, text="Path to any other program to run (Not mentioned in cmd commands)").grid(column=0, row=7, sticky="NW", padx=2, pady=2)
+        tk.Label(self.master, text="Path to program to run").grid(column=0, row=2, sticky="NW", padx=2, pady=2)
         self.path_to_program = tk.Entry(self.master, width=62)
-        self.path_to_program.grid(column=0, row=8, sticky="NW", padx=2, pady=2 )
-        self.browse_program = tk.Button(self.master, width=6, text="Browse", command=browseProgram)
-        self.browse_program.grid(column=1, row=8, padx=1, sticky="NW")
-        if saved_other_program:
-            self.path_to_program.insert(0, saved_other_program)
+        self.path_to_program.grid(column=0, row=3, sticky="NW", padx=2, pady=2 )
+        self.browse_program = tk.Button(self.master, width=6, text="Browse", command=lambda :browseProgram(self.path_to_program))
+        self.browse_program.grid(column=1, row=3, padx=1, sticky="NW")
 
-        #save button
-        self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2)
+        tk.Label(self.master, text="Path to second program to run").grid(column=0, row=4, sticky="NW", padx=2, pady=2)
+        self.path_to_program1 = tk.Entry(self.master, width=62)
+        self.path_to_program1.grid(column=0, row=5, sticky="NW", padx=2, pady=2 )
+        self.browse_program1 = tk.Button(self.master, width=6, text="Browse", command=lambda :browseProgram(self.path_to_program1))
+        self.browse_program1.grid(column=1, row=5, padx=1, sticky="NW")
 
+        #radio button for cmd
+        var = tk.IntVar()
+
+        self.cmd_radio_1 = tk.Radiobutton(self.master, text="Open cmd", value=1, variable=var)
+        self.cmd_radio_1.grid(column=0, row=6, padx=1, sticky="NW")
+        self.cmd_radio_0 = tk.Radiobutton(self.master, text="Don't open cmd", value=0, variable=var)
+        self.cmd_radio_0.grid(column=0, row=7, padx=1, sticky="NW")
+
+        tk.Label(self.master, text="Select a name for this set of paths").grid(column=0, row=8, padx=2, pady=2, sticky="NW")
+        self.preset_name = tk.Entry(self.master, width=62)
+        self.preset_name.grid(column=0, row=9, padx=2, pady=2)
+        
+        self.save_button = tk.Button(self.master, text="Save", command=Save).grid(column=0, row=10, padx=2, pady=5)
 
         self.master.mainloop()
 
+class Main:
+    def __init__(self, master, title, geometry, height, width):
+        self.master = master
+        self.master.title(title)
+        self.master.geometry(geometry)
+        self.master.resizable(height=height, width=width)
 
-def run():
+        def new_preset():
+            self.master.destroy()
+            root = tk.Tk()
+            window_size = "500x400"
+            resizable_height = 0
+            resizable_width = 0
+            app = Menu(root, "Workflow Automation", window_size, resizable_height, resizable_width)
+        
+        def Confirm():
+            """This confirms the chosen preset"""
+            selected_preset = selected.get()
+            save_current(selected_preset)
+            return self.master.destroy()
+
+        def deleteSelected():
+            """This deletes the selected preset"""
+            selected_preset = selected.get()
+            delete(selected_preset)
+            self.master.destroy()
+            return start()
+        
+        #make a new preset
+        self.new_preset_button = tk.Button(self.master, text="New preset", command=new_preset)
+        self.new_preset_button.place(relx=0.5, rely=0.3, anchor="center")
+
+        #select a preset
+        selected = tk.StringVar()
+        options = get_names()
+        if len(options) == 0:
+            options = ["No presets yet"]
+            selected.set(options[0])
+        else:
+            selected.set(get_current())
+        tk.Label(self.master, text="Select a preset").place(relx=0.5, rely=0.4, anchor="center")
+        presets = tk.OptionMenu(self.master, selected, *options)
+        presets.place(relx=0.5, rely=0.5, anchor="center")
+
+        self.confirm_btn = tk.Button(self.master, text="Confirm", command=Confirm)
+        self.confirm_btn.place(relx=0.5, rely=0.6, anchor="center")
+
+        self.delete_selected = tk.Button(self.master, text="Delete selected preset", command=deleteSelected)
+        self.delete_selected.place(relx=0.5, rely=0.8, anchor="center")
+
+        self.master.mainloop()
+
+def start():
     root = tk.Tk()
-    window_size = "500x400"
+    window_size = "200x300"
     resizable_height = 0
     resizable_width = 0
-    app = Menu(root, "Workflow Automation", window_size, resizable_height, resizable_width)
+    app = Main(root, "Workflow Automation", window_size, resizable_height, resizable_width)
+
 
 if __name__=="__main__":
-    run()
+    start()
